@@ -18,30 +18,29 @@ stock = {
 }
 
 def stock_marca(marca):
-    marca =  marca.lower()
+    marca = marca.lower()
     total = 0
-
     for modelo, datos in productos.items():
-        if datos[0] == marca:
-            total += stock[modelo][1]
-
-    print(f"El stock es: '{marca.capitalize()}': {total}")
+        if datos[0].lower() == marca:
+            if modelo in stock:
+                total += stock[modelo][1]
+    print(f"El stock de: {total}")
 
 
 #Busqueda de precio
 def busqueda_precio(p_min, p_max):
-    resultados = []  # Lista donde se guardarán los resultados que cumplan con las condiciones
+    resultados = [] # Lista donde se guardarán los resultados que cumplan con las condiciones
     for modelo, (precio, cantidad) in stock.items():
-         if cantidad > 0 and p_min <= precio <= p_max:
-            marca = modelo[marca][0]
-            resultados.append(f"{marca}--{modelo}") # Marca--Modelo”.
+        if cantidad > 0 and p_min <= precio <= p_max:
+            if modelo in productos:
+                marca = productos[modelo][0]
+                resultados.append(f"{marca}--{modelo}")
+    
     # Si se encontraron resultados que cumplen con las condiciones
     if resultados:
-        # Ordenamos alfabéticamente 
-        for item in sorted(resultados):
-            print(item)
+        resultados.sort() #ordenado alfabeticamete
+        print(f"Los notebooks entre los precios consultas son: {resultados}")
     else:
-        # Si la lista está vacía, significa que no hay stock disponibles en ese rango de precio
         print("No hay notebooks en ese rango de precios.")
 
 # actualizar precios 
@@ -52,19 +51,52 @@ def actualizar_precio(modelo, p):
     else:
         return False  # El modelo no existe
     
+# Menú principal
 def main():
     while True:
         print("\n*** MENU PRINCIPAL ***")
         print("1. Stock marca.")
         print("2. Búsqueda por precio.")
         print("3. Actualizar precio.")
-        print("4. Salir")
+        print("4. Salir.")
         opcion = input("Ingrese opción: ")
 
         if opcion == "1":
             marca = input("Ingrese marca a consultar: ")
             stock_marca(marca)
 
-        #elif opcion == "2":
+        elif opcion == "2":
+            while True:
+                try:
+                    p_min = int(input("Ingrese precio mínimo: "))
+                    p_max = int(input("Ingrese precio máximo: "))
+                    busqueda_precio(p_min, p_max)
+                    break
+                except ValueError:
+                    print("Debe ingresar valores enteros!!")
 
+        elif opcion == "3":
+            while True:
+                modelo = input("Ingrese modelo a actualizar: ")
+                try:
+                    nuevo_precio = int(input("Ingrese precio nuevo: "))
+                    if actualizar_precio(modelo, nuevo_precio):
+                        print("Precio actualizado!!")
+                    else:
+                        print("El modelo no existe!!")
+                except ValueError:
+                    print("Debe ingresar un precio válido.")
+                
+                repetir = input("Desea actualizar otro precio (s/n)?: ").lower()
+                if repetir != "si":
+                    break
+
+        elif opcion == "4":
+            print("Programa finalizado.")
+            break
+
+        else:
+            print("Debe seleccionar una opción válida!!")
+
+# Ejecutar el programa
 main()
