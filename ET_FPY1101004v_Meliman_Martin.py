@@ -1,4 +1,4 @@
-#productos = {modelo: [marca, pantalla, RAM, disco, GB de DD, procesador, video]
+# productos = {modelo: [marca, pantalla, RAM, disco, GB de DD, procesador, video]
 productos = {
     '8475HD': ['HP', 15.6, '8GB', 'DD', '1T', 'Intel Core i5', 'Nvidia GTX1050'],
     '2175HD': ['lenovo', 14, '4GB', 'SSD', '512GB', 'Intel Core i5', 'Nvidia GTX1050'],
@@ -10,24 +10,25 @@ productos = {
     'UWU131HD': ['Dell', 15.6, '8GB', 'DD', '1T', 'AMD Ryzen 3', 'Nvidia GTX1050']
 
 }
-#stock = {modelo: [precio, stock], ...]
+# stock = {modelo: [precio, stock], ...]
 stock = {
     '8475HD': [387990,10], '2175HD': [327990,4], 'JjfFHD': [424990,1],
     'fgdxFHD': [664990,21], '123FHD': [290890,32], '342FHD': [444990,7],
     'GF75HD': [749990,2], 'UWU131HD': [349990,1], 'FS1230HD': [249990,0],
 }
 
+# stock marca 
 def stock_marca(marca):
-    marca = marca.lower()
-    total = 0
+    marca = marca.lower() 
+    total = 0 # contador de stock
     for modelo, datos in productos.items():
         if datos[0].lower() == marca:
             if modelo in stock:
-                total += stock[modelo][1]
+                total += stock[modelo][1] # stock total
     print(f"El stock de: {total}")
 
 
-#Busqueda de precio
+# Busqueda de precio
 def busqueda_precio(p_min, p_max):
     resultados = [] # Lista donde se guardarán los resultados que cumplan con las condiciones
     for modelo, (precio, cantidad) in stock.items():
@@ -61,10 +62,12 @@ def main():
         print("4. Salir.")
         opcion = input("Ingrese opción: ")
 
+        # stock marca
         if opcion == "1":
             marca = input("Ingrese marca a consultar: ")
             stock_marca(marca)
-
+        
+        # busqueda por precio
         elif opcion == "2":
             while True:
                 try:
@@ -74,7 +77,7 @@ def main():
                     break
                 except ValueError:
                     print("Debe ingresar valores enteros!!")
-
+        #Actualizar precio
         elif opcion == "3":
             while True:
                 modelo = input("Ingrese modelo a actualizar: ")
@@ -90,7 +93,7 @@ def main():
                 repetir = input("Desea actualizar otro precio (s/n)?: ").lower()
                 if repetir != "si":
                     break
-
+        # Salir
         elif opcion == "4":
             print("Programa finalizado.")
             break
